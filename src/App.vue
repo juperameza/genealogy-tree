@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       landscape: [],
-      data: daxcsa.attributes[0]
+      data: daxcsa.data.attributes[0],
     };
   },
   methods: {
