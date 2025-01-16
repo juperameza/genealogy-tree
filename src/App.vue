@@ -1,28 +1,59 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="main d-flex flex-column justify-content-around align-items-center">
+    <label>
+      Vertical
+      <input type="checkbox" v-model="landscape" value="1" />
+    </label>
+
+    <div class="main-content d-flex align-items-center">
+      <BinaryTree :json="data" :class="{ landscape: landscape.length }" @click-node="clickNode" />
+    </div>
+
+    <footer class="main-footer bg-dark col-12 d-flex justify-content-center align-items-center">
+      <p class="text-white">
+        © 2023 Author Github
+        <a href="https://github.com/mdiaz00147/Vue-Binary-Tree" target="_blank" class="text-warning">Vue-Binary-Tree</a>
+      </p>
+    </footer>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import BinaryTree from "./components/BinaryTree/BinaryTree.vue";
+import daxcsa from '@/data/Daxcsa.json'
 export default {
-  name: 'App',
+  name: "app",
   components: {
-    HelloWorld
-  }
-}
+    BinaryTree,
+  },
+  data() {
+    return {
+      landscape: [],
+      data: daxcsa.attributes[0]
+    };
+  },
+  methods: {
+    clickNode: function (node) {
+      // eslint-disable-next-line
+      console.log(node);
+    },
+  },
+};
 </script>
 
-<style>
+<style lang="scss" scoped>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  background: #e8ebee;
+  min-height: 1000px;
+}
+
+.main {
+  &-content {
+    flex: 1;
+  }
+
+  &-footer {
+    flex: 0.5;
+  }
 }
 </style>
