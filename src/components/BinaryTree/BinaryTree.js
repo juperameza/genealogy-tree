@@ -20,6 +20,7 @@ export default {
     json: {
       handler: function (Props) {
         this.nodes = 0
+
         const extendKey = (jsonData) => {
           if (!jsonData) return null
 
@@ -31,16 +32,30 @@ export default {
           } else {
             jsonData.extend = !!jsonData.extend
           }
+
           jsonData.name = jsonData.full_name
           jsonData.image_url =
             jsonData.image_url ||
             "https://t4.ftcdn.net/jpg/00/65/77/27/360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg"
 
           if (Array.isArray(jsonData.children)) {
-            jsonData.children = jsonData.children.map((child) =>
-              extendKey(child)
-            )
+            jsonData.children = jsonData.children
+              .map((child) => extendKey(child))
+              .sort((a, b) => {
+                if (
+                  a.binary_placement === "Left" &&
+                  b.binary_placement === "Right"
+                )
+                  return -1
+                if (
+                  a.binary_placement === "Right" &&
+                  b.binary_placement === "Left"
+                )
+                  return 1
+                return 0
+              })
           }
+
           this.nodes++
           return jsonData
         }
@@ -52,6 +67,7 @@ export default {
       immediate: true,
     },
   },
+
   methods: {
     _getTooltipOptions(node) {
       if (!node) return {}

@@ -3,9 +3,7 @@
     <td
       :colspan="json.children ? json.children.length * 2 : 1"
       :class="{ parentLevel: json.children, extend: json.children && json.extend }">
-      <div
-        :class="{ node: true, 'has-mate': json.mate }"
-        v-tooltip="_getTooltipOptions(json)">
+      <div :class="{ node: true}" v-tooltip="_getTooltipOptions(json)">
         <div class="person" @click="setNewRoot(json)">
           <div class="avat">
             <img :src="json.image_url" />
@@ -17,20 +15,6 @@
 
           <template v-else>
             <div class="name">{{ json.name }}</div>
-          </template>
-        </div>
-
-        <div class="person" v-if="json.mate" @click="setNewRoot(json.mate)">
-          <div class="avat">
-            <img :src="json.mate.image_url" />
-          </div>
-
-          <template v-if="json.mate.name_html">
-            <div class="name" v-html="json.mate.name_html"></div>
-          </template>
-
-          <template v-else>
-            <div class="name">{{ json.mate.name }}</div>
           </template>
         </div>
       </div>

@@ -1,10 +1,5 @@
 <template>
   <div id="app" class="main d-flex flex-column justify-content-around align-items-center">
-    <label>
-      Vertical
-      <input type="checkbox" v-model="landscape" value="1" />
-    </label>
-
     <div class="main-content d-flex align-items-center">
       <BinaryTree :json="data" :class="{ landscape: landscape.length }" @click-node="clickNode"
         @update-root="updateRoot" />
@@ -26,7 +21,7 @@ export default {
   data() {
     return {
       landscape: [],
-      data: daxcsa.data.attributes[0], // Initial tree data
+      data: daxcsa.data.attributes[0],
     };
   },
   methods: {
@@ -35,7 +30,7 @@ export default {
     },
     updateRoot(newRoot) {
       console.log("New root set:", newRoot);
-      this.data = newRoot; // Update the tree root
+      this.data = newRoot;
     },
   },
 };
