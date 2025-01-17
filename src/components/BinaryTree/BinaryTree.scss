@@ -12,7 +12,6 @@
   }
 }
 
-
 .extend-handle {
   position: absolute;
   left: 50%;
@@ -203,4 +202,13 @@
 .landscape .has-mate .person:last-child {
   left: -4em;
   margin-left: 0;
+}
+.left {
+  text-align: left;
+  justify-content: flex-start;
+}
+
+.right {
+  text-align: right;
+  justify-content: flex-end;
 }

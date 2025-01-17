@@ -54,15 +54,21 @@ export default {
   },
   methods: {
     _getTooltipOptions(node) {
-      const result = {}
-      if (node) {
-        result.username = node.username
-        result.status = node.status
-        result.product_name = node.product_name
-        result.category_name = node.category_name
-        result.binary_placement = node.binary_placement
+      if (!node) return {}
+
+      return {
+        content: `
+          <div>
+            <strong>${node.username || "N/A"}</strong><br />
+            Name: ${node.full_name || "Unkown"}</br>
+            Status: ${node.status || "Unknown"}<br />
+            Product: ${node.product_name || "N/A"}<br />
+            Category: ${node.category_name || "N/A"}<br />
+            Placement: ${node.binary_placement || "N/A"}
+          </div>
+        `,
+        html: true,
       }
-      return result
     },
 
     _toggleExtend(treeData) {
