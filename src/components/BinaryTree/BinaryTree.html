@@ -1,57 +1,54 @@
-<table v-if="treeData.name" class="vue-binary-tree-table">
+<table v-if="json.name" class="vue-binary-tree-table">
   <tr>
     <td
-      :colspan="treeData.children ? treeData.children.length * 2 : 1"
-      :class="{ parentLevel: treeData.children, extend: treeData.children && treeData.extend }">
+      :colspan="json.children ? json.children.length * 2 : 1"
+      :class="{ parentLevel: json.children, extend: json.children && json.extend }">
       <div
-        :class="{ node: true, 'has-mate': treeData.mate }"
-        v-tooltip="_getTooltipOptions(treeData)">
-        <div class="person" @click="$emit('click-node', treeData)">
+        :class="{ node: true, 'has-mate': json.mate }"
+        v-tooltip="_getTooltipOptions(json)">
+        <div class="person" @click="setNewRoot(json)">
           <div class="avat">
-            <img :src="treeData.image_url" />
+            <img :src="json.image_url" />
           </div>
 
-          <template v-if="treeData.name_html">
-            <div class="name" v-html="treeData.name_html"></div>
+          <template v-if="json.name_html">
+            <div class="name" v-html="json.name_html"></div>
           </template>
 
           <template v-else>
-            <div class="name">{{ treeData.name }}</div>
+            <div class="name">{{ json.name }}</div>
           </template>
         </div>
 
-        <div
-          class="person"
-          v-if="treeData.mate"
-          @click="$emit('click-node', treeData.mate)">
+        <div class="person" v-if="json.mate" @click="setNewRoot(json.mate)">
           <div class="avat">
-            <img :src="treeData.mate.image_url" />
+            <img :src="json.mate.image_url" />
           </div>
 
-          <template v-if="treeData.mate.name_html">
-            <div class="name" v-html="treeData.mate.name_html"></div>
+          <template v-if="json.mate.name_html">
+            <div class="name" v-html="json.mate.name_html"></div>
           </template>
 
           <template v-else>
-            <div class="name">{{ treeData.mate.name }}</div>
+            <div class="name">{{ json.mate.name }}</div>
           </template>
         </div>
       </div>
 
       <div
         class="extend-handle"
-        v-if="treeData.children"
-        @click="_toggleExtend(treeData)"></div>
+        v-if="json.children"
+        @click="_toggleExtend(json)"></div>
     </td>
   </tr>
 
-  <tr v-if="treeData.children && treeData.extend">
+  <tr v-if="json.children && json.extend">
     <td
-      v-for="(child, index) in treeData.children"
+      v-for="(child, index) in json.children"
       :key="index"
       colspan="2"
       class="child-level">
-      <BinaryTree :json="child" @click-node="$emit('click-node', $event)" />
+      <BinaryTree :json="child" @update-root="$emit('update-root', $event)" />
     </td>
   </tr>
 </table>

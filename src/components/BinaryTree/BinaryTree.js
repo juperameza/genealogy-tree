@@ -1,14 +1,13 @@
 import { VTooltip, Tooltip } from "floating-vue"
 
 import "floating-vue/dist/style.css"
-
 export default {
   name: "BinaryTree",
   props: ["json"],
   data() {
     return {
-      treeData: {},
-      maxNodes: 8,
+      maxNodes: 2,
+      nodes: 0,
     }
   },
   directives: {
@@ -20,35 +19,40 @@ export default {
   watch: {
     json: {
       handler: function (Props) {
+        this.nodes = 0
         const extendKey = (jsonData) => {
           if (!jsonData) return null
 
-          jsonData.extend =
-            jsonData.extend === undefined ? true : !!jsonData.extend
-
+          if (jsonData.extend === undefined) {
+            jsonData.extend = true
+            if (this.maxNodes <= this.nodes) {
+              jsonData.extend = false
+            }
+          } else {
+            jsonData.extend = !!jsonData.extend
+          }
           jsonData.name = jsonData.full_name
-          jsonData.image_url = jsonData.image_url || "/default-avatar.png"
+          jsonData.image_url =
+            jsonData.image_url ||
+            "https://t4.ftcdn.net/jpg/00/65/77/27/360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg"
 
           if (Array.isArray(jsonData.children)) {
             jsonData.children = jsonData.children.map((child) =>
               extendKey(child)
             )
           }
-
+          this.nodes++
           return jsonData
         }
 
         if (Props) {
-          this.treeData = extendKey(Props)
+          extendKey(Props)
         }
       },
       immediate: true,
     },
   },
   methods: {
-    /**
-     * Prepares tooltip options from node data.
-     */
     _getTooltipOptions(node) {
       const result = {}
       if (node) {
@@ -61,12 +65,13 @@ export default {
       return result
     },
 
-    /**
-     * Toggles the visibility of children for a node.
-     */
     _toggleExtend(treeData) {
       treeData.extend = !treeData.extend
       this.$forceUpdate()
+    },
+
+    setNewRoot(node) {
+      this.$emit("update-root", node)
     },
   },
 }
